@@ -1,0 +1,11 @@
+[Protocol]
+exec=SrsCoin-qt '%u'
+protocol=SrsCoin
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

@@ -1,0 +1,5 @@
+SrsCoin-qt usr/bin
+share/pixmaps/SrsCoin32.xpm usr/share/pixmaps
+share/pixmaps/SrsCoin80.xpm usr/share/pixmaps
+debian/SrsCoin-qt.desktop usr/share/applications
+debian/SrsCoin-qt.protocol usr/share/kde4/services/

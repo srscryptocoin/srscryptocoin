@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: SrsCoin
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# SrsCoin_enable (bool): Set to NO by default. Set this variable to YES if you want to enable SrsCoin service.
+# SrsCoin_config (path): Set to /usr/local/etc/SrsCoin.conf by default.
+# SrsCoin_user:  The user account SrsCoin daemon runs as. It uses 'root' user by default.
+# SrsCoin_group: The group account SrsCoin daemon runs as. It uses 'wheel' group by default.
+# SrsCoin_datadir (str): Default to "/var/db/SrsCoin". Base data directory.
+
+. /etc/rc.subr
+
+name=SrsCoin
+rcvar=SrsCoin_enable
+
+: ${SrsCoin_enable:=NO}
+: ${SrsCoin_config=/usr/local/etc/SrsCoin.conf}
+: ${SrsCoin_datadir=/var/db/SrsCoin}
+: ${SrsCoin_user="root"}
+: ${SrsCoin_group="wheel"}
+
+required_files=${SrsCoin_config}
+command=/usr/local/bin/SrsCoind
+SrsCoin_chdir=${SrsCoin_datadir}
+pidfile="${SrsCoin_datadir}/SrsCoind.pid"
+stop_cmd=SrsCoin_stop
+command_args="-conf=${SrsCoin_config} -datadir=${SrsCoin_datadir} -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+SrsCoin_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${SrsCoin_datadir}
+	[ $? -eq 0 ] && chown -R ${SrsCoin_user}:${SrsCoin_group} ${SrsCoin_datadir}
+}
+
+SrsCoin_prestart()
+{
+	if [ ! -d "${SrsCoin_datadir}/." ]; then
+		SrsCoin_create_datadir || return 1
+	fi
+}
+
+SrsCoin_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+SrsCoin_stop()
+{
+    SrsCoin_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${SrsCoin_config} -datadir=${SrsCoin_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"

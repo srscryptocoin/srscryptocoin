@@ -1,0 +1,11 @@
+[Unit]
+Description=SrsCoin daemon serivce
+After=network.target
+
+[Service]
+Type=simple
+User=SrsCoin
+ExecStart=/opt/SrsCoin/SrsCoind
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SrsCoin
+Comment=SrsCoin P2P Cryptocurrency
+Comment[ru]=SrsCoin, P2P криптовалюта
+Comment[fr]=SrsCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=SrsCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/SrsCoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/SrsCoin80.xpm
+MimeType=x-scheme-handler/SrsCoin;
+Categories=Office;
